@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Command">
+		<Text>Посчитать объем</Text>
+		<Description>Описание</Description>
+		<Assembly>DLLS\WallsVolume.dll</Assembly>
+		<FullClassName>WallsVolume.Main</FullClassName>
+		<ClientId>60f68d4a-db0f-40ff-99c4-95144333effa</ClientId>
+		<VendorId>ADSK</VendorId>
+	</AddIn>
+</RevitAddIns>
