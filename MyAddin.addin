@@ -4,7 +4,7 @@
 		<Text>Расставить отверстия</Text>
 		<Description>Описание</Description>
 		<Assembly>DLLS\AddHole.dll</Assembly>
-		<FullClassName>AddHole.Main</FullClassName>
+		<FullClassName>AddHole.AddHole</FullClassName>
 		<ClientId>60f61d4a-db0f-40ff-99c4-95144333effa</ClientId>
 		<VendorId>ADSK</VendorId>
 	</AddIn>

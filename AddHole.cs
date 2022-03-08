@@ -83,6 +83,11 @@ namespace AddHole
             using (var ts = new Transaction(arDoc, $"adding holes for {typeof(T).FullName}"))
             {
                 ts.Start();
+                if (!holeSymbol.IsActive)
+                {
+                    holeSymbol.Activate();
+                    arDoc.Regenerate();
+                }
                 foreach (MEPCurve mepObj in mepObjects)
                 {
                     Curve curve = (mepObj.Location as LocationCurve).Curve;
