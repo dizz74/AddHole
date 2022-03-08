@@ -63,12 +63,12 @@ namespace AddHole
 
 
 
-            AddHolesForDucts<Duct>();
-            AddHolesForDucts<Pipe>();
+            AddHolesForT<Duct>();
+            AddHolesForT<Pipe>();
             return Result.Succeeded;
         }
 
-        private void AddHolesForDucts<T>()
+        private void AddHolesForT<T>()
         {
             //T is Duct or Pipe
 
