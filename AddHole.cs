@@ -47,8 +47,6 @@ namespace AddHole
                 return Result.Failed;
             }
 
-
-
             view3d = new FilteredElementCollector(arDoc)
                .OfClass(typeof(View3D))
                .OfType<View3D>()
@@ -60,8 +58,6 @@ namespace AddHole
                 message = "Не найден view3d";
                 return Result.Failed;
             }
-
-
 
             AddHolesForT<Duct>();
             AddHolesForT<Pipe>();
