@@ -24,34 +24,36 @@ namespace AddHole
         {
             UIApplication uiApp = commandData.Application;
             UIDocument uiDocument = uiApp.ActiveUIDocument;
-              arDoc = uiDocument.Document;
+            arDoc = uiDocument.Document;
 
-              ovDoc = arDoc.Application.Documents.OfType<Document>().Where(x => x.Title.Contains("ОВ")).FirstOrDefault();
-            if (ovDoc == null) {
+            ovDoc = arDoc.Application.Documents.OfType<Document>().Where(x => x.Title.Contains("ОВ")).FirstOrDefault();
+            if (ovDoc == null)
+            {
                 message = "Не найден новый файл";
-                return Result.Failed; 
+                return Result.Failed;
             }
 
 
-             holeSymbol = new FilteredElementCollector(arDoc)
-                .OfClass(typeof(FamilySymbol))
-                .OfCategory(BuiltInCategory.OST_GenericModel)
-                .OfType<FamilySymbol>()
-                .Where(x=>x.FamilyName.Equals("Отверстие"))
-                .FirstOrDefault();
+            holeSymbol = new FilteredElementCollector(arDoc)
+               .OfClass(typeof(FamilySymbol))
+               .OfCategory(BuiltInCategory.OST_GenericModel)
+               .OfType<FamilySymbol>()
+               .Where(x => x.FamilyName.Equals("Отверстие"))
+               .FirstOrDefault();
 
-            if (holeSymbol == null) {
+            if (holeSymbol == null)
+            {
                 message = "Не найдено семейство";
                 return Result.Failed;
             }
 
-          
 
-             view3d = new FilteredElementCollector(arDoc)
-                .OfClass(typeof(View3D))
-                .OfType<View3D>()
-                .Where(x => !x.IsTemplate)
-                .FirstOrDefault();
+
+            view3d = new FilteredElementCollector(arDoc)
+               .OfClass(typeof(View3D))
+               .OfType<View3D>()
+               .Where(x => !x.IsTemplate)
+               .FirstOrDefault();
 
             if (view3d == null)
             {
@@ -61,7 +63,7 @@ namespace AddHole
 
 
 
-            AddHolesForDucts<Duct>(); 
+            AddHolesForDucts<Duct>();
             AddHolesForDucts<Pipe>();
             return Result.Succeeded;
         }
@@ -70,14 +72,14 @@ namespace AddHole
         {
             //T is Duct or Pipe
 
-            
-            List<MEPCurve> mepObjects= new FilteredElementCollector(ovDoc)
+
+            List<MEPCurve> mepObjects = new FilteredElementCollector(ovDoc)
                  .OfClass(typeof(T))
-                 .OfCategory(typeof(T).Equals(typeof(Duct))?BuiltInCategory.OST_DuctCurves:BuiltInCategory.OST_PipeCurves)
+                 .OfCategory(typeof(T).Equals(typeof(Duct)) ? BuiltInCategory.OST_DuctCurves : BuiltInCategory.OST_PipeCurves)
                  .OfType<MEPCurve>()
                  .ToList();
 
-            
+
             ReferenceIntersector referenceIntersector = new ReferenceIntersector(
         new ElementClassFilter(typeof(Wall)),
          FindReferenceTarget.Element, view3d);
@@ -102,14 +104,12 @@ namespace AddHole
                         Reference reference = context.GetReference();
                         Wall wall = arDoc.GetElement(reference.ElementId) as Wall;
                         Level level = arDoc.GetElement(wall.LevelId) as Level;
-
                         XYZ pointHole = point + (dir * proximity);
 
                         FamilyInstance hole = arDoc.Create.NewFamilyInstance(pointHole, holeSymbol, wall, level, Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
+                        
                         Parameter width = hole.LookupParameter("Ширина");
                         Parameter height = hole.LookupParameter("Высота");
-
-
                         double offset = UnitUtils.ConvertToInternalUnits(50, UnitTypeId.Millimeters);
                         if (mepObj.get_Parameter(BuiltInParameter.RBS_CURVE_DIAMETER_PARAM) != null || mepObj.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM) != null)
                         {
